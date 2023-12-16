@@ -37,6 +37,7 @@ for x in range (leaguesCount): #Adds all the teams' URL
 
 #print(combinedLeaguesURLS)
 team_url = combinedLeaguesURLS[0]
+#print(team_url)
 data = requests.get(team_url)
 
 soup = BeautifulSoup(data.text, features = "html.parser")
@@ -49,8 +50,36 @@ links = [l for l in links if "/players/" in l and "/matchlogs/" not in l]
 #print(links)
 
 playerURL = [f"https://fbref.com{l}" for l in links] #urls of players
-print(playerURL)
+#print(playerURL)
 
+playerTest = playerURL[9]
+#print(playerTest)
+
+
+parts = playerTest.split("/")
+name = parts[-1]
+nameURL = name.replace("-", " ")
+#print(nameURL)
+
+
+data = requests.get(playerTest)
+soup = BeautifulSoup(data.text, features = "html.parser")
+
+Name = soup.find_all("span")
+Name = [N for N in Name if nameURL in N]
+print(Name[0].text)
+
+Position = soup.find_all("p")
+# Position = [P for P in Position if "Position:" in P]
+print(Position)
+# Footed =
+# Nationality =
+
+
+
+
+#print(Name, Position)
+#Position = 
 
 
 
