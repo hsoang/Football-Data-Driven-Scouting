@@ -70,16 +70,24 @@ Name = [N for N in Name if nameURL in N]
 print(Name[0].text)
 
 Position = soup.find_all("p")
+end = 0
+while end < 10:
+    if "Position" in Position[end].text:
+        Position = Position[end].text
+        end = 10
+    else:
+        end += 1
+    
+
+
+
+
 # Position = [P for P in Position if "Position:" in P]
-print(Position)
+#print(Position)
 # Footed =
 # Nationality =
 
 
-
-
-#print(Name, Position)
-#Position = 
 
 
 
