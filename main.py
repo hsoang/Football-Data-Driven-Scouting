@@ -67,27 +67,59 @@ soup = BeautifulSoup(data.text, features = "html.parser")
 
 Name = soup.find_all("span")
 Name = [N for N in Name if nameURL in N]
-print(Name[0].text)
+Name = Name[0].text
+print(Name)
 
-Position = soup.find_all("p")
+shortInfo = soup.find_all("p")
 end = 0
-while end < 10:
-    if "Position" in Position[end].text:
-        Position = Position[end].text
-        end = 10
+while end < 5:
+    if "Position" in shortInfo[end].text:
+        shortInfo = shortInfo[end].text
+        end = 5
     else:
         end += 1
-    
 
-
-
-
-# Position = [P for P in Position if "Position:" in P]
 #print(Position)
-# Footed =
-# Nationality =
+        
+parts = shortInfo.split("▪ ")
+Position = parts[0].split(":")[1].strip()
+Footed = parts[1].split(":")[1].strip()
+
+#print(f"His position is: {Position}")
+#print(f"His dominant foot is: {Footed}")
+    
+Birthdate = soup.find_all("span", id = "necro-birth")
+Birthdate = Birthdate[0].text
+#print(Birthdate)
+
+nationality = soup.find_all("p")
+end = 0
+while end < 5:
+    if "National Team" in nationality[end].text:
+        nationality = nationality[end].text
+        end = 5
+    else:
+        end += 1
+
+nationality = nationality.split(":")
+NationalTeam = nationality[1].split(" ")
+NationalTeam = NationalTeam[0].strip()
+print(NationalTeam)
 
 
+clubInfo = soup.find_all("p")
+end = 0
+while end < 7:
+    if "Club:" in clubInfo[end].text:
+        clubInfo= clubInfo[end].text
+        end = 7
+    else:
+        end += 1
+
+
+clubInfo = clubInfo.split(":")
+Club = clubInfo[1].strip()
+print(Club)
 
 
 
