@@ -121,8 +121,10 @@ clubInfo = clubInfo.split(":")
 Club = clubInfo[1].strip()
 print(Club)
 
+# stats_table = pd.read_html(data.text, match = "Scouting Report")
+# print(stats_table)
 
-
-
+stats = soup.find_all("tr")
+print(stats[1].text)
 
 
