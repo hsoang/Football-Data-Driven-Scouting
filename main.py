@@ -1,6 +1,7 @@
 #Web Scraping
 #Using mostly per 90 stats
 
+from unidecode import unidecode
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -59,16 +60,27 @@ playerTest = playerURL[9]
 parts = playerTest.split("/")
 name = parts[-1]
 nameURL = name.replace("-", " ")
-#print(nameURL)
+print(nameURL)
 
+def normalize_name(name): #remove accents from names
+    return unidecode(name)
 
 data = requests.get(playerTest)
 soup = BeautifulSoup(data.text, features = "html.parser")
 
 Name = soup.find_all("span")
-Name = [N for N in Name if nameURL in N]
-Name = Name[0].text
-print(Name)
+end = True
+counter = 0
+
+while (end):
+    if nameURL in normalize_name(Name[counter].text):
+        Name = Name[counter]
+        end = False
+    else:
+        counter += 1
+
+print(Name.text)
+
 
 shortInfo = soup.find_all("p")
 end = 0
@@ -126,5 +138,21 @@ print(Club)
 
 stats = soup.find_all("tr")
 print(stats[1].text)
-
-
+print(stats[2].text)
+print(stats[3].text)
+print(stats[4].text)
+print(stats[5].text)
+print(stats[6].text)
+print(stats[7].text)
+print(stats[9].text)
+print(stats[10].text)
+print(stats[11].text)
+print(stats[12].text)
+print(stats[13].text)
+print(stats[14].text)
+print(stats[15].text)
+print(stats[17].text)
+print(stats[18].text)
+print(stats[19].text)
+print(stats[20].text)
+print(stats[21].text)
