@@ -15,7 +15,7 @@ def getTeamUrls():
     Championship = "https://fbref.com/en/comps/10/Championship-Stats"
     Eredivisie = "https://fbref.com/en/comps/23/Eredivisie-Stats"
 
-    leaguesList = [Championship]
+    leaguesList = [SerieA]
     leaguesCount = len(leaguesList) #number of leagues to be used
     combinedLeaguesURLS = [] #urls of teams
 
@@ -180,12 +180,12 @@ def getTeamUrls():
 # print(stats[20].text)
 # print(stats[21].text)
 
-def normalize_name(name): #remove accents from names
+def normalizeName(name): #remove accents from names
     name = name.replace("-"," ")
     return unidecode(name)
 
-def playerStats(teamLinks):
-
+def retrievePlayerStats(teamLinks):
+    
     for x in range(len(teamLinks)):
         data = requests.get(teamLinks[x])
         soup = BeautifulSoup(data.text, features = "html.parser")
@@ -201,7 +201,7 @@ def playerStats(teamLinks):
         playerURLS = [f"https://fbref.com{l}" for l in links] #urls of players
         #print(playerURLS)
 
-        for x in range(len(playerURLS)):
+        for x in range((len(playerURLS)) - 18):
             parts = playerURLS[x].split("/")
             name = parts[-1]
             nameURL = name.replace("-", " ")
@@ -214,43 +214,53 @@ def playerStats(teamLinks):
             counter = 0
 
             while (end):
-                if nameURL in normalize_name(Name[counter].text):
-                    Name = Name[counter]
+                if nameURL in normalizeName(Name[counter].text):
+                    Name = Name[counter].text
                     end = False
                 else:
                     counter += 1
 
-            print(Name, end = " ")
+            print(Name)
             shortInfo = soup.find_all("p")
-            end = 0
-            while end < 5:
+            end = True
+            counter = 0
+
+            while (end):
                 if "Position" in shortInfo[end].text:
                     shortInfo = shortInfo[end].text
-                    end = 5
+                    end = False
                 else:
-                    end += 1
+                    counter += 1
 
-            print(Position, end = " ")
+            #print(Position, end = " ")
                     
             parts = shortInfo.split("▪ ")
             Position = parts[0].split(":")[1].strip()
-            Footed = parts[1].split(":")[1].strip()
+            try:
+                Footed = parts[1].split(":")[1].strip()
+            except IndexError:
+                Footed = None
 
-            #print(f"His position is: {Position}")
-            #print(f"His dominant foot is: {Footed}")
+            print(Position, end = " ")
+            if (Footed == None):
+                pass
+            else:
+                print(f"Dominant foot is: {Footed}", end = " ")
                 
             Birthdate = soup.find_all("span", id = "necro-birth")
             Birthdate = Birthdate[0].text
             print(Birthdate, end = " ")
 
             nationality = soup.find_all("p")
-            end = 0
-            while end < 5:
+            end = True
+            counter = 0
+
+            while (end):
                 if "National Team" in nationality[end].text:
                     nationality = nationality[end].text
-                    end = 5
+                    end = False
                 else:
-                    end += 1
+                    counter += 1
 
             nationality = nationality.split(":")
             NationalTeam = nationality[1].split(" ")
@@ -259,24 +269,26 @@ def playerStats(teamLinks):
 
 
             clubInfo = soup.find_all("p")
-            end = 0
-            while end < 7:
+            end = True
+            counter = 0
+
+            while (end):
                 if "Club:" in clubInfo[end].text:
                     clubInfo= clubInfo[end].text
-                    end = 7
+                    end = False
                 else:
-                    end += 1
+                    counter += 1
 
 
             clubInfo = clubInfo.split(":")
             Club = clubInfo[1].strip()
-            print(Club, end = " ")
+            print(Club)
 
 
 if __name__ == '__main__':
     print("main")
 
     teamUrls = getTeamUrls()
-    print(teamUrls)
-
-    #playerStats(teamUrls)
+    #print(teamUrls)
+    
+    retrievePlayerStats(teamUrls)
