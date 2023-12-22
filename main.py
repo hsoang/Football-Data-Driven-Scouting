@@ -5,6 +5,7 @@ from unidecode import unidecode
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
+import time
 
 
 def getTeamUrls():
@@ -15,7 +16,7 @@ def getTeamUrls():
     Championship = "https://fbref.com/en/comps/10/Championship-Stats"
     Eredivisie = "https://fbref.com/en/comps/23/Eredivisie-Stats"
 
-    leaguesList = [SerieA]
+    leaguesList = [Ligue1]
     leaguesCount = len(leaguesList) #number of leagues to be used
     combinedLeaguesURLS = [] #urls of teams
 
@@ -201,7 +202,7 @@ def retrievePlayerStats(teamLinks):
         playerURLS = [f"https://fbref.com{l}" for l in links] #urls of players
         #print(playerURLS)
 
-        for x in range((len(playerURLS)) - 18):
+        for x in range(len(playerURLS)):
             parts = playerURLS[x].split("/")
             name = parts[-1]
             nameURL = name.replace("-", " ")
@@ -209,6 +210,7 @@ def retrievePlayerStats(teamLinks):
 
             data = requests.get(playerURLS[x])
             soup = BeautifulSoup(data.text, features = "html.parser")
+
             Name = soup.find_all("span")
             end = True
             counter = 0
@@ -220,14 +222,14 @@ def retrievePlayerStats(teamLinks):
                 else:
                     counter += 1
 
-            print(Name)
+            print(Name, end = " ")
             shortInfo = soup.find_all("p")
             end = True
             counter = 0
 
             while (end):
-                if "Position" in shortInfo[end].text:
-                    shortInfo = shortInfo[end].text
+                if "Position" in shortInfo[counter].text:
+                    shortInfo = shortInfo[counter].text
                     end = False
                 else:
                     counter += 1
@@ -245,7 +247,7 @@ def retrievePlayerStats(teamLinks):
             if (Footed == None):
                 pass
             else:
-                print(f"Dominant foot is: {Footed}", end = " ")
+                print(f"Dominant foot: {Footed}", end = " ")
                 
             Birthdate = soup.find_all("span", id = "necro-birth")
             Birthdate = Birthdate[0].text
@@ -256,8 +258,8 @@ def retrievePlayerStats(teamLinks):
             counter = 0
 
             while (end):
-                if "National Team" in nationality[end].text:
-                    nationality = nationality[end].text
+                if "National Team" in nationality[counter].text or "Citizenship" in nationality[counter].text:
+                    nationality = nationality[counter].text
                     end = False
                 else:
                     counter += 1
@@ -273,8 +275,8 @@ def retrievePlayerStats(teamLinks):
             counter = 0
 
             while (end):
-                if "Club:" in clubInfo[end].text:
-                    clubInfo= clubInfo[end].text
+                if "Club:" in clubInfo[counter].text:
+                    clubInfo= clubInfo[counter].text
                     end = False
                 else:
                     counter += 1
@@ -284,6 +286,8 @@ def retrievePlayerStats(teamLinks):
             Club = clubInfo[1].strip()
             print(Club)
 
+            time.sleep(3)
+
 
 if __name__ == '__main__':
     print("main")
@@ -291,4 +295,4 @@ if __name__ == '__main__':
     teamUrls = getTeamUrls()
     #print(teamUrls)
     
-    retrievePlayerStats(teamUrls)
+    retrievePlayerStats(teamUrls[0:2])
