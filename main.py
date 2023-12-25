@@ -76,6 +76,9 @@ def createPlayerObjectNonGK(name, position, footed, birthdate, nationality,
     }
     return new_player
 
+def createPlayerObjectGK(name, position, footed, birthdate):
+    pass
+
 def normalizeName(name): #remove accents from names
     name = name.replace("-"," ")
     return unidecode(name)
@@ -184,17 +187,50 @@ def retrievePlayerStats(teamLinks):
             #print(Club)
 
             if "GK" in Position:
-                #print(Name)
-                #stats = soup.find_all("tr")
-                #stat1 = stats[1].text
-                # stat1 = stat1[8:]
-                #print(stat1)
-                # print(stats[2].text)
-                # print(stats[3].text)
-                # print(stats[4].text)
-                # print(stats[5].text)
-                playersGKs.append(Name)
+                print(Name)
+                stats = soup.find_all("tr")
+                stat1 = stats[1].text
+                stat1 = stat1[7:]
+                print(stat1)
+                stat2 = stats[2].text
+                stat2 = stat2[13:]
+                print(stat2)
+                stat3 = stats[3].text
+                stat3 = stat3[15:19]
+                print(stat3)
+                stat4 = stats[4].text
+                stat4 = stat4[8:]
+                print(stat4)
+                stat5 = stats[5].text
+                stat5 = stat5[21:25]
+                print(stat5)
+                stat6 = stats[6].text
+                stat6 = stat6[22:26]
+                print(stat6)
+                stat8 = stats[8].text
+                stat8 = stat8[7:]                
+                print(stat8)
+                stat9 = stats[9].text
+                stat9 = stat9[8:13]               
+                print(stat9)
+                stat10 = stats[10].text
+                stat10 = stat10[10:]                
+                print(stat10)
+                stat11 = stats[11].text
+                stat11 = stat11[25:29]
+                print(stat11)
+                stat13 = stats[13].text
+                stat13 = stat13[17:21]
+                print(stat13)
+                stat14 = stats[14].text
+                stat14 = stat14[30:]
+                print(stat14)
+                stat15 = stats[15].text
+                stat15 = stat15[29:33]
+                print(stat15)
+                
             else:
+                #print(Name)
                 stats = soup.find_all("tr")
                 stat1 = stats[1].text
                 stat1 = stat1[17:]
@@ -221,7 +257,7 @@ def retrievePlayerStats(teamLinks):
                 stat9 = stat9[16:]    
                 #print(stat9)     
                 stat10 = stats[10].text
-                stat10 = stat10[17:21]
+                stat10 = stat10[17:22]
                 #print(stat10)
                 stat11 = stats[11].text
                 stat11 = stat11[18:]
@@ -274,7 +310,7 @@ if __name__ == '__main__':
     
     NonGKs, GKs = retrievePlayerStats(teamUrls[0:2])
     print("----------------------------------------------------")
-    for x in range (len(NonGKs)):
-        print(NonGKs[x]["name"])
-        print(NonGKs[x]["nationality"])
-        print(NonGKs[x]["club"])
+    # for x in range (len(NonGKs)):
+    #     print(NonGKs[x]["name"], end = " ")
+    #     print(NonGKs[x]["nationality"], end = " ")
+    #     print(NonGKs[x]["club"])
