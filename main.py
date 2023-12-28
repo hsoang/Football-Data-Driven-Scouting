@@ -76,8 +76,31 @@ def createPlayerObjectNonGK(name, position, footed, birthdate, nationality,
     }
     return new_player
 
-def createPlayerObjectGK(name, position, footed, birthdate):
-    pass
+def createPlayerObjectGK(name, position, footed, birthdate, nationality, club, stat1, stat2, stat3, stat4, stat5,
+                         stat6, stat8, stat9, stat10, stat11, stat13, stat14, stat15):
+    new_player = {
+        "name": name,
+        "position": position,
+        "footed": footed,
+        "birthdate": birthdate,
+        "nationality": nationality,
+        "club": club,
+        "Post-Shot Expected Goals minus Goals Allowed": stat1,
+        "Goals Against": stat2,
+        "Save Percentage": stat3,
+        "Post-Shot Expected Goals per Shot on Target": stat4,
+        "Saves% (Penality Kicks)": stat5,
+        "Clean Sheet Percentage": stat6,
+        "Touches": stat8,
+        "Launch %": stat9,
+        "Goal Kicks": stat10,
+        "Average length of Goal Kicks": stat11,
+        "Crosses Stopped %": stat13,
+        "Defensive Actions Outside Penalty Area": stat14,
+        "Average Distance of Defense Actions": stat15
+    }
+    return new_player
+
 
 def normalizeName(name): #remove accents from names
     name = name.replace("-"," ")
@@ -187,107 +210,113 @@ def retrievePlayerStats(teamLinks):
             #print(Club)
 
             if "GK" in Position:
-                print(Name)
+                #print(Name)
                 stats = soup.find_all("tr")
                 stat1 = stats[1].text
-                stat1 = stat1[7:]
-                print(stat1)
+                stat1 = stat1[7:12]
+                #print(stat1)
                 stat2 = stats[2].text
-                stat2 = stat2[13:]
-                print(stat2)
+                stat2 = stat2[13:17]
+                #print(stat2)
                 stat3 = stats[3].text
                 stat3 = stat3[15:19]
-                print(stat3)
+                #print(stat3)
                 stat4 = stats[4].text
-                stat4 = stat4[8:]
-                print(stat4)
+                stat4 = stat4[8:12]
+                #print(stat4)
                 stat5 = stats[5].text
                 stat5 = stat5[21:25]
-                print(stat5)
+                #print(stat5)
                 stat6 = stats[6].text
                 stat6 = stat6[22:26]
-                print(stat6)
+                #print(stat6)
                 stat8 = stats[8].text
-                stat8 = stat8[7:]                
-                print(stat8)
+                stat8 = stat8[7:12]                
+                #print(stat8)
                 stat9 = stats[9].text
                 stat9 = stat9[8:13]               
-                print(stat9)
+                #print(stat9)
                 stat10 = stats[10].text
-                stat10 = stat10[10:]                
-                print(stat10)
+                stat10 = stat10[10:14]                
+                #print(stat10)
                 stat11 = stats[11].text
                 stat11 = stat11[25:29]
-                print(stat11)
+                #print(stat11)
                 stat13 = stats[13].text
                 stat13 = stat13[17:21]
-                print(stat13)
+                #print(stat13)
                 stat14 = stats[14].text
-                stat14 = stat14[30:]
-                print(stat14)
+                stat14 = stat14[30:34]
+                #print(stat14)
                 stat15 = stats[15].text
                 stat15 = stat15[29:33]
-                print(stat15)
+                #print(stat15)
+
+                playerObject = createPlayerObjectGK(Name, Position, Footed, Birthdate, NationalTeam,
+                                                       Club, stat1, stat2, stat3, stat4,
+                                                       stat5, stat6, stat8, stat9,
+                                                       stat10, stat11, stat13, stat14, stat15)
+                playersGKs.append(playerObject)                
                 
             else:
                 #print(Name)
                 stats = soup.find_all("tr")
                 stat1 = stats[1].text
-                stat1 = stat1[17:]
+                stat1 = stat1[17:21]
                 #print(stat1)
                 stat2 = stats[2].text
-                stat2 = stat2[20:]
+                stat2 = stat2[20:24]
                 #print(stat2)
                 stat3 = stats[3].text
-                stat3 = stat3[11:]
+                stat3 = stat3[11:15]
                 #print(stat3)
                 stat4 = stats[4].text
-                stat4 = stat4[7:]
+                stat4 = stat4[7:11]
                 #print(stat4)
                 stat5 = stats[5].text
-                stat5 = stat5[28:]
+                stat5 = stat5[28:32]
                 #print(stat5)
                 stat6 = stats[6].text
-                stat6 = stat6[10:]
+                stat6 = stat6[10:14]
                 #print(stat6)
                 stat7 = stats[7].text
-                stat7 = stat7[21:]
+                stat7 = stat7[21:25]
                 #print(stat7)
                 stat9 = stats[9].text
-                stat9 = stat9[16:]    
+                stat9 = stat9[16:20]    
                 #print(stat9)     
                 stat10 = stats[10].text
                 stat10 = stat10[17:22]
                 #print(stat10)
                 stat11 = stats[11].text
-                stat11 = stat11[18:]
+                stat11 = stat11[18:22]
                 #print(stat11)
                 stat12 = stats[12].text
-                stat12 = stat12[19:]
+                stat12 = stat12[19:23]
                 #print(stat12)
                 stat12 = stats[13].text
-                stat12 = stat12[19:]  
+                stat12 = stat12[19:23]  
                 #print(stat12) 
                 stat14 = stats[14].text
-                stat14 = stat14[17:]  
+                stat14 = stat14[17:21]  
                 #print(stat14) 
                 stat15 = stats[15].text
-                stat15 = stat15[22:]  
+                stat15 = stat15[22:26]  
                 #print(stat15)        
                 stat17 = stats[17].text
-                stat17 = stat17[7:]  
+                stat17 = stat17[7:11]  
                 #print(stat17)     
                 stat18 = stats[18].text
-                stat18 = stat18[13:]  
+                stat18 = stat18[13:17]  
                 #print(stat18)     
                 stat19 = stats[19].text
-                stat19 = stat19[6:]  
+                stat19 = stat19[6:10]  
                 #print(stat19)     
                 stat20 = stats[20].text
-                stat20 = stat20[10:]  
+                stat20 = stat20[10:14]  
                 #print(stat20)     
                 stat21 = stats[21].text
-                stat21 = stat21[11:]  
+                stat21 = stat21[11:15]  
                 #print(stat21)              
             
                 playerObject = createPlayerObjectNonGK(Name, Position, Footed, Birthdate, NationalTeam,
@@ -309,8 +338,14 @@ if __name__ == '__main__':
     #print(teamUrls)
     
     NonGKs, GKs = retrievePlayerStats(teamUrls[0:2])
-    print("----------------------------------------------------")
-    # for x in range (len(NonGKs)):
-    #     print(NonGKs[x]["name"], end = " ")
-    #     print(NonGKs[x]["nationality"], end = " ")
-    #     print(NonGKs[x]["club"])
+    print("-----------------NonGKs-----------------------------------")
+    for x in range (len(NonGKs)):
+        print(NonGKs[x]["name"], end = " ")
+        print(NonGKs[x]["nationality"], end = " ")
+        print(NonGKs[x]["club"])
+
+    print("-----------------GoalKeepers-----------------------------------")
+    for x in range (len(GKs)):
+        print(GKs[x]["name"], end = " ")
+        print(GKs[x]["nationality"], end = " ")
+        print(GKs[x]["club"])
