@@ -4,9 +4,8 @@
 from unidecode import unidecode
 import requests
 from bs4 import BeautifulSoup
-import json
 import time
-import re
+import operator
 
 
 def getTeamUrls():
@@ -338,14 +337,57 @@ if __name__ == '__main__':
     #print(teamUrls)
     
     NonGKs, GKs = retrievePlayerStats(teamUrls[0:2])
+    print("Data of all players from chosen leagues has been successfully collected, what would you like to do next?")
+
+    userInput = None
+    while userInput != 0:
+        print("\nMain Menu")
+        print("0. Quit and Export Data.\n1. Work with outfield players (no GKs).\n2. Work with goalkeepers.")
+        userInput = int(input())
+        match userInput:
+            case 1:
+                while userInput != 0:
+                    print("\nSort by: ")
+                    print("0. Return to Main Menu\n1. Name\n2. Position\n3. Footed\n4. Non-Penalty Goals\n5. Non-Penalty xG(npxG)")
+                    userInput = int(input())
+                    match userInput:
+                        case 1:
+                            NonGKs = sorted(NonGKs, key=lambda player: player["name"])
+                        case 2:
+                            NonGKs = sorted(NonGKs, key=lambda player: player["position"], reverse=True)
+                        case 3:
+                            NonGKs = sorted(NonGKs, key=lambda player: player["footed"], reverse=True)
+                        case 4:
+                            NonGKs = sorted(NonGKs, key=lambda player: player["Non-Penalty Goals"], reverse=True)
+                        case 5:
+                            NonGKs = sorted(NonGKs, key=lambda player: player["Non-Penalty xG(npxG)"], reverse=True)
+            case 2:
+                while userInput != 0:
+                    print("\nSort by: ")
+                    print("0. Return to Main Menu\n1. Name\n2. Post-Shot Expected Goals minus Goals Allowed\n3. Goals Against")
+                    userInput = int(input())
+                    match userInput:
+                        case 1:
+                            GKs = sorted(GKs, key=lambda player: player["name"], reverse=True)
+                        case 2:
+                            GKs = sorted(GKs, key=lambda player: player["Post-Shot Expected Goals minus Goals Allowed"], reverse=True)
+                        case 3:
+                            GKs = sorted(GKs, key=lambda player: player["Goals Against"], reverse=True)
+
+         
+
+
+
+    # NonGKs = sorted(NonGKs, key=lambda player: player["Tackles"], reverse=True)
+
     print("-----------------NonGKs-----------------------------------")
     for x in range (len(NonGKs)):
         print(NonGKs[x]["name"], end = " ")
-        print(NonGKs[x]["nationality"], end = " ")
-        print(NonGKs[x]["club"])
+        print(NonGKs[x]["Non-Penalty Goals"], end = " ")
+        print(NonGKs[x]["Non-Penalty xG(npxG)"])
 
     print("-----------------GoalKeepers-----------------------------------")
     for x in range (len(GKs)):
         print(GKs[x]["name"], end = " ")
-        print(GKs[x]["nationality"], end = " ")
-        print(GKs[x]["club"])
+        print(GKs[x]["Post-Shot Expected Goals minus Goals Allowed"], end = " ")
+        print(GKs[x]["Goals Against"])
