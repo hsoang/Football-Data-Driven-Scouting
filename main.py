@@ -339,52 +339,109 @@ if __name__ == '__main__':
     NonGKs, GKs = retrievePlayerStats(teamUrls[0:2])
     print("Data of all players from chosen leagues has been successfully collected, what would you like to do next?")
 
-    userInput = None
-    while userInput != 0:
+    
+    while True:
         print("\nMain Menu")
         print("0. Quit and Export Data.\n1. Work with outfield players (no GKs).\n2. Work with goalkeepers.")
         userInput = int(input())
-        match userInput:
-            case 1:
-                while userInput != 0:
-                    print("\nSort by: ")
-                    print("0. Return to Main Menu\n1. Name\n2. Position\n3. Footed\n4. Non-Penalty Goals\n5. Non-Penalty xG(npxG)")
-                    userInput = int(input())
-                    match userInput:
-                        case 1:
-                            NonGKs = sorted(NonGKs, key=lambda player: player["name"])
-                        case 2:
-                            NonGKs = sorted(NonGKs, key=lambda player: player["position"], reverse=True)
-                        case 3:
-                            NonGKs = sorted(NonGKs, key=lambda player: player["footed"], reverse=True)
-                        case 4:
-                            NonGKs = sorted(NonGKs, key=lambda player: player["Non-Penalty Goals"], reverse=True)
-                        case 5:
-                            NonGKs = sorted(NonGKs, key=lambda player: player["Non-Penalty xG(npxG)"], reverse=True)
-            case 2:
-                while userInput != 0:
-                    print("\nSort by: ")
-                    print("0. Return to Main Menu\n1. Name\n2. Post-Shot Expected Goals minus Goals Allowed\n3. Goals Against")
-                    userInput = int(input())
-                    match userInput:
-                        case 1:
-                            GKs = sorted(GKs, key=lambda player: player["name"], reverse=True)
-                        case 2:
-                            GKs = sorted(GKs, key=lambda player: player["Post-Shot Expected Goals minus Goals Allowed"], reverse=True)
-                        case 3:
-                            GKs = sorted(GKs, key=lambda player: player["Goals Against"], reverse=True)
 
+        if userInput == 0:
+            break
+        elif userInput == 1:
+            print("\nSort by: ")
+            print("0. Return to Main Menu\n1. Name\n2. Position\n3. Footed\n4. Non-Penalty Goals\n5. Non-Penalty xG(npxG)")
+            userInput = int(input())
+            match userInput:
+                case 1:
+                    NonGKs = sorted(NonGKs, key=lambda player: player["name"])
+                case 2:
+                    NonGKs = sorted(NonGKs, key=lambda player: player["position"], reverse=True)
+                case 3:
+                    NonGKs = sorted(NonGKs, key=lambda player: player["footed"], reverse=True)
+                case 4:
+                    NonGKs = sorted(NonGKs, key=lambda player: player["Non-Penalty Goals"], reverse=True)
+                case 5:
+                    NonGKs = sorted(NonGKs, key=lambda player: player["Non-Penalty xG(npxG)"], reverse=True)
+                case 6:
+                    NonGKs = sorted(NonGKs, key=lambda player: player["Shots Total"])
+                case 7:
+                    NonGKs = sorted(NonGKs, key=lambda player: player["Assists"], reverse=True)
+                case 8:
+                    NonGKs = sorted(NonGKs, key=lambda player: player["Expected Asissted Goals(xAG)"], reverse=True)
+                case 9:
+                    NonGKs = sorted(NonGKs, key=lambda player: player["npxG + xAG"], reverse=True)
+                case 10:
+                    NonGKs = sorted(NonGKs, key=lambda player: player["Shot-Creating Actions"], reverse=True)
+                case 11:
+                    NonGKs = sorted(NonGKs, key=lambda player: player["Passes Attempted"])
+                case 12:
+                    NonGKs = sorted(NonGKs, key=lambda player: player["Pass Completion %"], reverse=True)
+                case 13:
+                    NonGKs = sorted(NonGKs, key=lambda player: player["Progessive Passes"], reverse=True)
+                case 14:
+                    NonGKs = sorted(NonGKs, key=lambda player: player["Progessive Carries"], reverse=True)
+                case 15:
+                    NonGKs = sorted(NonGKs, key=lambda player: player["Successful Take-Ons"], reverse=True)
+                case 16:
+                    NonGKs = sorted(NonGKs, key=lambda player: player["Touches(Att Pen)"])
+                case 17:
+                    NonGKs = sorted(NonGKs, key=lambda player: player["Tackles"], reverse=True)
+                case 18:
+                    NonGKs = sorted(NonGKs, key=lambda player: player["Interceptions"], reverse=True)
+                case 19:
+                    NonGKs = sorted(NonGKs, key=lambda player: player["Blocks"], reverse=True)
+                case 20:
+                    NonGKs = sorted(NonGKs, key=lambda player: player["Clearances"], reverse=True)
+                case 21:
+                    NonGKs = sorted(NonGKs, key=lambda player: player["Aerials Won"])
+            
+        elif userInput == 2:
+            print("\nSort by: ")
+            print("0. Return to Main Menu\n1. Name\n2. Post-Shot Expected Goals minus Goals Allowed\n3. Goals Against")
+            userInput = int(input())
+            match userInput:
+                case 1:
+                    GKs = sorted(GKs, key=lambda player: player["name"], reverse=True)
+                case 2:
+                    GKs = sorted(GKs, key=lambda player: player["Post-Shot Expected Goals minus Goals Allowed"], reverse=True)
+                case 3:
+                    GKs = sorted(GKs, key=lambda player: player["Goals Against"], reverse=True)
+                case 4:
+                    GKs = sorted(GKs, key=lambda player: player["name"], reverse=True)
+                case 5:
+                    GKs = sorted(GKs, key=lambda player: player["Post-Shot Expected Goals minus Goals Allowed"], reverse=True)
+                case 6:
+                    GKs = sorted(GKs, key=lambda player: player["Goals Against"], reverse=True)
+                case 7:
+                    GKs = sorted(GKs, key=lambda player: player["name"], reverse=True)
+                case 8:
+                    GKs = sorted(GKs, key=lambda player: player["Post-Shot Expected Goals minus Goals Allowed"], reverse=True)
+                case 9:
+                    GKs = sorted(GKs, key=lambda player: player["Goals Against"], reverse=True)
+                case 10:
+                    GKs = sorted(GKs, key=lambda player: player["name"], reverse=True)
+                case 11:
+                    GKs = sorted(GKs, key=lambda player: player["Post-Shot Expected Goals minus Goals Allowed"], reverse=True)
+                case 12:
+                    GKs = sorted(GKs, key=lambda player: player["Goals Against"], reverse=True)
+                case 13:
+                    GKs = sorted(GKs, key=lambda player: player["Post-Shot Expected Goals minus Goals Allowed"], reverse=True)
+                case 14:
+                    GKs = sorted(GKs, key=lambda player: player["Goals Against"], reverse=True)
+        else:
+            print("Invalid Choice.")
          
 
 
 
-    # NonGKs = sorted(NonGKs, key=lambda player: player["Tackles"], reverse=True)
 
+    print("STATS ARE LISTED IN VALUES PER 90 MINUTES PLAYED")
     print("-----------------NonGKs-----------------------------------")
+    print(f"{'Name':<20}  {'Footed':<8} {'Birthdate':<10} {'Nationality':<15} {'Club':<20} {'Non-Penalty Goals':<15} {'Non-Penalty xG(npxG)':<15} {'Shots Total':<10} {'Assists':<8} {'Expected Asissted Goals(xAG)':<25} {'npxG + xAG':<10} {'Shot-Creating Actions':<20} {'Passes Attempted':<15} {'Pass Completion %':<15} {'Progessive Passes':<18} {'Progessive Carries':<18} {'Successful Take-Ons':<20} {'Touches(Att Pen)':<18} {'Tackles':<8} {'Interceptions':<15} {'Blocks':<8} {'Clearances':<10} {'Aerials Won':<12}")
+    
     for x in range (len(NonGKs)):
-        print(NonGKs[x]["name"], end = " ")
-        print(NonGKs[x]["Non-Penalty Goals"], end = " ")
-        print(NonGKs[x]["Non-Penalty xG(npxG)"])
+        print(f"{NonGKs[x]['name']:<20} {NonGKs[x]['position']:<15} {NonGKs[x]['footed']:<8} {NonGKs[x]['birthdate']:<10} {NonGKs[x]['nationality']:<15} {NonGKs[x]['club']:<20} {NonGKs[x]['Non-Penalty Goals']:<15} {NonGKs[x]['Non-Penalty xG(npxG)']:<15} {NonGKs[x]['Shots Total']:<10} {NonGKs[x]['Assists']:<8} {NonGKs[x]['Expected Asissted Goals(xAG)']:<25} {NonGKs[x]['npxG + xAG']:<10} {NonGKs[x]['Shot-Creating Actions']:<20} {NonGKs[x]['Passes Attempted']:<15} {NonGKs[x]['Pass Completion %']:<15} {NonGKs[x]['Progessive Passes']:<18} {NonGKs[x]['Progessive Carries']:<18} {NonGKs[x]['Successful Take-Ons']:<20} {NonGKs[x]['Touches(Att Pen)']:<18} {NonGKs[x]['Tackles']:<8} {NonGKs[x]['Interceptions']:<15} {NonGKs[x]['Blocks']:<8} {NonGKs[x]['Clearances']:<10} {NonGKs[x]['Aerials Won']:<12}")
+
 
     print("-----------------GoalKeepers-----------------------------------")
     for x in range (len(GKs)):
