@@ -88,7 +88,7 @@ def createPlayerObjectGK(name, position, footed, birthdate, nationality, club, s
         "Goals Against": stat2,
         "Save Percentage": stat3,
         "Post-Shot Expected Goals per Shot on Target": stat4,
-        "Saves% (Penality Kicks)": stat5,
+        "Saves% (Penalty Kicks)": stat5,
         "Clean Sheet Percentage": stat6,
         "Touches": stat8,
         "Launch %": stat9,
@@ -100,6 +100,20 @@ def createPlayerObjectGK(name, position, footed, birthdate, nationality, club, s
     }
     return new_player
 
+def dataIntCheck(string):
+    try:
+        data = float(string)
+        return string
+    except ValueError:
+        return "0.00"
+
+def dataIntCheckPercent(string):
+    string1 = string[0:4]
+    try:
+        data = float(string1)
+        return string
+    except ValueError:
+        return "0.00"
 
 def normalizeName(name): #remove accents from names
     name = name.replace("-"," ")
@@ -215,42 +229,57 @@ def retrievePlayerStats(teamLinks):
                     break
                 stat1 = stats[1].text
                 stat1 = stat1[7:12]
+                stat1 = dataIntCheck(stat1)
                 #print(stat1)
                 stat2 = stats[2].text
                 stat2 = stat2[13:17]
+                stat2 = dataIntCheck(stat2)
                 #print(stat2)
                 stat3 = stats[3].text
                 stat3 = stat3[15:19]
+                stat3 = dataIntCheckPercent(stat3)  
                 #print(stat3)
                 stat4 = stats[4].text
                 stat4 = stat4[8:12]
+                stat4 = dataIntCheck(stat4)
+                if int(stat4) > 2:
+                    stat4 = "0.00"
                 #print(stat4)
                 stat5 = stats[5].text
                 stat5 = stat5[21:25]
+                stat5 = dataIntCheckPercent(stat5)  
                 #print(stat5)
                 stat6 = stats[6].text
                 stat6 = stat6[22:26]
+                stat6 = dataIntCheckPercent(stat6)  
                 #print(stat6)
                 stat8 = stats[8].text
-                stat8 = stat8[7:12]                
+                stat8 = stat8[7:12]  
+                stat8 = dataIntCheck(stat8)              
                 #print(stat8)
                 stat9 = stats[9].text
-                stat9 = stat9[8:13]               
+                stat9 = stat9[8:13]   
+                stat9 = dataIntCheckPercent(stat9)             
                 #print(stat9)
                 stat10 = stats[10].text
-                stat10 = stat10[10:14]                
+                stat10 = stat10[10:14]  
+                stat10 = dataIntCheck(stat10)              
                 #print(stat10)
                 stat11 = stats[11].text
                 stat11 = stat11[25:29]
+                stat11 = dataIntCheck(stat11)
                 #print(stat11)
                 stat13 = stats[13].text
                 stat13 = stat13[17:21]
+                stat13 = dataIntCheckPercent(stat13)  
                 #print(stat13)
                 stat14 = stats[14].text
                 stat14 = stat14[30:34]
+                stat14 = dataIntCheck(stat14)
                 #print(stat14)
                 stat15 = stats[15].text
                 stat15 = stat15[29:33]
+                stat15 = dataIntCheck(stat15)
                 #print(stat15)
 
                 playerObject = createPlayerObjectGK(Name, Position, Footed, Birthdate, NationalTeam,
@@ -266,60 +295,79 @@ def retrievePlayerStats(teamLinks):
                     break
                 stat1 = stats[1].text
                 stat1 = stat1[17:21]
+                stat1 = dataIntCheck(stat1)
                 #print(stat1)
                 stat2 = stats[2].text
                 stat2 = stat2[20:24]
+                stat2 = dataIntCheck(stat2)
                 #print(stat2)
                 stat3 = stats[3].text
                 stat3 = stat3[11:15]
+                stat3 = dataIntCheck(stat3)
                 #print(stat3)
                 stat4 = stats[4].text
                 stat4 = stat4[7:11]
+                stat4 = dataIntCheck(stat4)
                 #print(stat4)
                 stat5 = stats[5].text
                 stat5 = stat5[28:32]
+                stat5 = dataIntCheck(stat5)
                 #print(stat5)
                 stat6 = stats[6].text
                 stat6 = stat6[10:14]
+                stat6 = dataIntCheck(stat6)
                 #print(stat6)
                 stat7 = stats[7].text
                 stat7 = stat7[21:25]
+                stat7 = dataIntCheck(stat7)
                 #print(stat7)
                 stat9 = stats[9].text
-                stat9 = stat9[16:20]    
+                stat9 = stat9[16:20]  
+                stat9 = dataIntCheck(stat9)  
                 #print(stat9)     
                 stat10 = stats[10].text
                 stat10 = stat10[17:22]
+                stat10 = dataIntCheckPercent(stat10)  
                 #print(stat10)
                 stat11 = stats[11].text
                 stat11 = stat11[18:22]
+                stat11 = dataIntCheck(stat11)
                 #print(stat11)
                 stat12 = stats[12].text
                 stat12 = stat12[19:23]
+                stat12 = dataIntCheck(stat12)
                 #print(stat12)
-                stat12 = stats[13].text
-                stat12 = stat12[19:23]  
-                #print(stat12) 
+                stat13 = stats[13].text
+                stat13 = stat13[19:23]  
+                stat13 = dataIntCheck(stat13)
+                #print(stat13) 
                 stat14 = stats[14].text
                 stat14 = stat14[17:21]  
+                stat14 = dataIntCheck(stat14)
                 #print(stat14) 
                 stat15 = stats[15].text
-                stat15 = stat15[22:26]  
+                stat15 = stat15[22:26]
+                stat15 = dataIntCheck(stat15)  
                 #print(stat15)        
                 stat17 = stats[17].text
                 stat17 = stat17[7:11]  
+                stat17 = dataIntCheck(stat17)
                 #print(stat17)     
                 stat18 = stats[18].text
                 stat18 = stat18[13:17]  
+                stat18 = dataIntCheck(stat18)
                 #print(stat18)     
                 stat19 = stats[19].text
                 stat19 = stat19[6:10]  
+                stat19 = dataIntCheck(stat19)
                 #print(stat19)     
                 stat20 = stats[20].text
                 stat20 = stat20[10:14]  
+                stat20 = dataIntCheck(stat20)
                 #print(stat20)     
                 stat21 = stats[21].text
                 stat21 = stat21[11:15]  
+                stat21 = dataIntCheck(stat21)
                 #print(stat21)              
             
                 playerObject = createPlayerObjectNonGK(Name, Position, Footed, Birthdate, NationalTeam,
@@ -478,14 +526,14 @@ if __name__ == '__main__':
     file = open('playersData.txt', 'w', encoding="utf-8")
 
     file.write("STATS ARE LISTED IN VALUES PER 90 MINUTES PLAYED\n")
-    file.write("-----------------Outfielders---------------------------------------------------------------------------\n")
+    file.write("-----------------Outfielders------------------------------------------------------------------------------------------------\n")
     file.write(f"{'Name':<24}  {'Position':<23} {'Footed':<12} {'Birthdate':<21} {'Nationality':<15} {'Club':<27} {statCategory:<15}\n")
     
     for x in range (len(NonGKs)):
         file.write(f"{NonGKs[x]['name']:<25} {NonGKs[x]['position']:<23} {NonGKs[x]['footed']:<12} {NonGKs[x]['birthdate']:<21} {NonGKs[x]['nationality']:<15} {NonGKs[x]['club']:<27} {NonGKs[x][statCategory]:<15}\n")
 
 
-    file.write("-----------------Goalkeepers----------------------------------------------------------------------\n")
+    file.write("------------------Goalkeepers-----------------------------------------------------------------------------------------------\n")
     file.write(f"{'Name':<24}  {'Position':<23} {'Footed':<12} {'Birthdate':<21} {'Nationality':<15} {'Club':<22} {statCategoryGK:<20}\n")
 
     for x in range (len(GKs)):
