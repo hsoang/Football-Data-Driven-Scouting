@@ -331,7 +331,7 @@ def retrievePlayerStats(teamLinks):
 
 
 if __name__ == '__main__':
-    print("main")
+    
 
     teamUrls = getTeamUrls()
     #print(teamUrls)
@@ -471,18 +471,22 @@ if __name__ == '__main__':
          
 
 
+    file = open('playersData.txt', 'w', encoding="utf-8")
 
-
-    print("STATS ARE LISTED IN VALUES PER 90 MINUTES PLAYED")
-    print("-----------------NonGKs-----------------------------------")
-    print(f"{'Name':<19}  {'Position':<23} {'Footed':<20} {'Birthdate':<20} {'Nationality':<15} {'Club':<22} {statCategory:<15}")
+    file.write("STATS ARE LISTED IN VALUES PER 90 MINUTES PLAYED\n")
+    file.write("-----------------NonGKs-----------------------------------\n")
+    file.write(f"{'Name':<25}  {'Position':<23} {'Footed':<20} {'Birthdate':<20} {'Nationality':<15} {'Club':<27} {statCategory:<15}\n")
     
     for x in range (len(NonGKs)):
-        print(f"{NonGKs[x]['name']:<20} {NonGKs[x]['position']:<23} {NonGKs[x]['footed']:<20} {NonGKs[x]['birthdate']:<20} {NonGKs[x]['nationality']:<15} {NonGKs[x]['club']:<22} {NonGKs[x][statCategory]:<15} ")
+        file.write(f"{NonGKs[x]['name']:<25} {NonGKs[x]['position']:<23} {NonGKs[x]['footed']:<20} {NonGKs[x]['birthdate']:<20} {NonGKs[x]['nationality']:<15} {NonGKs[x]['club']:<27} {NonGKs[x][statCategory]:<15}\n")
 
 
-    print("-----------------GoalKeepers-----------------------------------")
-    print(f"{'Name':<19}  {'Position':<23} {'Footed':<20} {'Birthdate':<20} {'Nationality':<15} {'Club':<22} {statCategoryGK:<15}")
+    file.write("-----------------GoalKeepers-----------------------------------\n")
+    file.write(f"{'Name':<25}  {'Position':<23} {'Footed':<20} {'Birthdate':<20} {'Nationality':<15} {'Club':<22} {statCategoryGK:<20}\n")
 
     for x in range (len(GKs)):
-        print(f"{GKs[x]['name']:<20} {GKs[x]['position']:<23} {GKs[x]['footed']:<20} {GKs[x]['birthdate']:<20} {GKs[x]['nationality']:<15} {GKs[x]['club']:<22} {GKs[x][statCategoryGK]:<15} ")
+        file.write(f"{GKs[x]['name']:<25} {GKs[x]['position']:<23} {GKs[x]['footed']:<20} {GKs[x]['birthdate']:<20} {GKs[x]['nationality']:<15} {GKs[x]['club']:<22} {GKs[x][statCategoryGK]:<20}\n")
+
+
+    file.close()
+    print("playersData.txt exported to the same location as this program.")
