@@ -123,7 +123,7 @@ def retrievePlayerStats(teamLinks):
         playerURLS = [f"https://fbref.com{l}" for l in links] #urls of players
         #print(playerURLS)
 
-        for x in range((len(playerURLS)) - 24): #Choosing number of players
+        for x in range((len(playerURLS))): #Choosing number of players
             parts = playerURLS[x].split("/")
             name = parts[-1]
             nameURL = name.replace("-", " ")
@@ -162,7 +162,7 @@ def retrievePlayerStats(teamLinks):
             try:
                 Footed = parts[1].split(":")[1].strip()
             except IndexError:
-                Footed = None
+                Footed = "N/A"
 
             #print(Position, end = " ")
             # if (Footed == None):
@@ -211,6 +211,8 @@ def retrievePlayerStats(teamLinks):
             if "GK" in Position:
                 #print(Name)
                 stats = soup.find_all("tr")
+                if len(stats) < 13: #if the player doesn't have any recorded stats, his data won't be collected
+                    break
                 stat1 = stats[1].text
                 stat1 = stat1[7:12]
                 #print(stat1)
@@ -260,6 +262,8 @@ def retrievePlayerStats(teamLinks):
             else:
                 #print(Name)
                 stats = soup.find_all("tr")
+                if len(stats) < 19: #if the player doesn't have any recorded stats, his data won't be collected
+                    break
                 stat1 = stats[1].text
                 stat1 = stat1[17:21]
                 #print(stat1)
@@ -331,12 +335,12 @@ def retrievePlayerStats(teamLinks):
 
 
 if __name__ == '__main__':
-    
+    print("\nCollecting data of players in the chosen league...\n")
 
     teamUrls = getTeamUrls()
     #print(teamUrls)
     
-    NonGKs, GKs = retrievePlayerStats(teamUrls[0:2])
+    NonGKs, GKs = retrievePlayerStats(teamUrls[0:1])
     print("Data of all players from chosen leagues has been successfully collected, what would you like to do next?")
 
     statCategory = "Non-Penalty Goals" #the output will only show the category the user chooses to sort by, along with basic info
@@ -474,19 +478,19 @@ if __name__ == '__main__':
     file = open('playersData.txt', 'w', encoding="utf-8")
 
     file.write("STATS ARE LISTED IN VALUES PER 90 MINUTES PLAYED\n")
-    file.write("-----------------NonGKs-----------------------------------\n")
-    file.write(f"{'Name':<25}  {'Position':<23} {'Footed':<20} {'Birthdate':<20} {'Nationality':<15} {'Club':<27} {statCategory:<15}\n")
+    file.write("-----------------Outfielders---------------------------------------------------------------------------\n")
+    file.write(f"{'Name':<24}  {'Position':<23} {'Footed':<12} {'Birthdate':<21} {'Nationality':<15} {'Club':<27} {statCategory:<15}\n")
     
     for x in range (len(NonGKs)):
-        file.write(f"{NonGKs[x]['name']:<25} {NonGKs[x]['position']:<23} {NonGKs[x]['footed']:<20} {NonGKs[x]['birthdate']:<20} {NonGKs[x]['nationality']:<15} {NonGKs[x]['club']:<27} {NonGKs[x][statCategory]:<15}\n")
+        file.write(f"{NonGKs[x]['name']:<25} {NonGKs[x]['position']:<23} {NonGKs[x]['footed']:<12} {NonGKs[x]['birthdate']:<21} {NonGKs[x]['nationality']:<15} {NonGKs[x]['club']:<27} {NonGKs[x][statCategory]:<15}\n")
 
 
-    file.write("-----------------GoalKeepers-----------------------------------\n")
-    file.write(f"{'Name':<25}  {'Position':<23} {'Footed':<20} {'Birthdate':<20} {'Nationality':<15} {'Club':<22} {statCategoryGK:<20}\n")
+    file.write("-----------------Goalkeepers----------------------------------------------------------------------\n")
+    file.write(f"{'Name':<24}  {'Position':<23} {'Footed':<12} {'Birthdate':<21} {'Nationality':<15} {'Club':<22} {statCategoryGK:<20}\n")
 
     for x in range (len(GKs)):
-        file.write(f"{GKs[x]['name']:<25} {GKs[x]['position']:<23} {GKs[x]['footed']:<20} {GKs[x]['birthdate']:<20} {GKs[x]['nationality']:<15} {GKs[x]['club']:<22} {GKs[x][statCategoryGK]:<20}\n")
+        file.write(f"{GKs[x]['name']:<25} {GKs[x]['position']:<23} {GKs[x]['footed']:<12} {GKs[x]['birthdate']:<21} {GKs[x]['nationality']:<15} {GKs[x]['club']:<22} {GKs[x][statCategoryGK]:<20}\n")
 
 
     file.close()
-    print("playersData.txt exported to the same location as this program.")
+    print("\nplayersData.txt exported to the same location as this program.\n")
