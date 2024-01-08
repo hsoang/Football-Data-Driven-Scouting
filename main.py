@@ -351,6 +351,8 @@ def retrievePlayerStats(teamLinks):
                 stat12 = stats[12].text
                 stat12 = stat12[19:23]
                 stat12 = dataIntCheck(stat12)
+                if float(stat12) > 20:
+                    break
                 #print(stat12)
                 stat13 = stats[13].text
                 stat13 = stat13[19:23]  
