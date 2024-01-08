@@ -108,7 +108,7 @@ def dataIntCheck(string):
         return "0.00"
 
 def dataIntCheckPercent(string):
-    string1 = string[0:4]
+    string1 = string[:-1]
     try:
         data = float(string1)
         return string
@@ -117,6 +117,7 @@ def dataIntCheckPercent(string):
 
 def normalizeName(name): #remove accents from names
     name = name.replace("-"," ")
+    name = name.replace("'","")
     return unidecode(name)
 
 def retrievePlayerStats(teamLinks):
@@ -149,6 +150,8 @@ def retrievePlayerStats(teamLinks):
             Name = soup.find_all("span")
             end = True
             counter = 0
+
+            #print(Name)
 
             while (end):
                 if nameURL in normalizeName(Name[counter].text):
@@ -242,7 +245,7 @@ def retrievePlayerStats(teamLinks):
                 stat4 = stats[4].text
                 stat4 = stat4[8:12]
                 stat4 = dataIntCheck(stat4)
-                if int(stat4) > 2:
+                if float(stat4) > 2:
                     stat4 = "0.00"
                 #print(stat4)
                 stat5 = stats[5].text
@@ -339,7 +342,7 @@ def retrievePlayerStats(teamLinks):
                 #print(stat12)
                 stat13 = stats[13].text
                 stat13 = stat13[19:23]  
-                stat13 = dataIntCheck(stat13)
+                stat13 = dataIntCheckPercent(stat13)
                 #print(stat13) 
                 stat14 = stats[14].text
                 stat14 = stat14[17:21]  
@@ -377,18 +380,18 @@ def retrievePlayerStats(teamLinks):
                                                        stat18, stat19, stat20, stat21)
                 playersNonGK.append(playerObject)
 
-            time.sleep(2)
+            time.sleep(1.5)
 
     return playersNonGK, playersGKs
 
 
 if __name__ == '__main__':
-    print("\nCollecting data of players in the chosen league...\n")
+    print("\nCollecting data of players in the chosen league(s)...\n")
 
     teamUrls = getTeamUrls()
     #print(teamUrls)
     
-    NonGKs, GKs = retrievePlayerStats(teamUrls[0:1])
+    NonGKs, GKs = retrievePlayerStats(teamUrls)
     print("Data of all players from chosen leagues has been successfully collected, what would you like to do next?")
 
     statCategory = "Non-Penalty Goals" #the output will only show the category the user chooses to sort by, along with basic info
@@ -484,7 +487,7 @@ if __name__ == '__main__':
                     statCategoryGK = "Post-Shot Expected Goals minus Goals Allowed"
                 case 3:
                     GKs = sorted(GKs, key=lambda player: player["Goals Against"], reverse=True)
-                    statCategoryGK = "Goal Against"
+                    statCategoryGK = "Goals Against"
                 case 4:
                     GKs = sorted(GKs, key=lambda player: player["Save Percentage"], reverse=True)
                     statCategoryGK = "Save Percentage"
@@ -526,18 +529,18 @@ if __name__ == '__main__':
     file = open('playersData.txt', 'w', encoding="utf-8")
 
     file.write("STATS ARE LISTED IN VALUES PER 90 MINUTES PLAYED\n")
-    file.write("-----------------Outfielders------------------------------------------------------------------------------------------------\n")
-    file.write(f"{'Name':<24}  {'Position':<23} {'Footed':<12} {'Birthdate':<21} {'Nationality':<15} {'Club':<27} {statCategory:<15}\n")
+    file.write("-----------------Outfielders---------------------------------------------------------------------------------------------------------------------------------------------\n")
+    file.write(f"{'Name':<27}  {'Position':<26} {'Footed':<12} {'Birthdate':<21} {'Nationality':<15} {'Club':<27} {statCategory:<15}\n")
     
     for x in range (len(NonGKs)):
-        file.write(f"{NonGKs[x]['name']:<25} {NonGKs[x]['position']:<23} {NonGKs[x]['footed']:<12} {NonGKs[x]['birthdate']:<21} {NonGKs[x]['nationality']:<15} {NonGKs[x]['club']:<27} {NonGKs[x][statCategory]:<15}\n")
+        file.write(f"{NonGKs[x]['name']:<28} {NonGKs[x]['position']:<26} {NonGKs[x]['footed']:<12} {NonGKs[x]['birthdate']:<21} {NonGKs[x]['nationality']:<15} {NonGKs[x]['club']:<27} {NonGKs[x][statCategory]:<15}\n")
 
 
-    file.write("------------------Goalkeepers-----------------------------------------------------------------------------------------------\n")
-    file.write(f"{'Name':<24}  {'Position':<23} {'Footed':<12} {'Birthdate':<21} {'Nationality':<15} {'Club':<22} {statCategoryGK:<20}\n")
+    file.write("------------------Goalkeepers--------------------------------------------------------------------------------------------------------------------------------------------\n")
+    file.write(f"{'Name':<27}  {'Position':<26} {'Footed':<12} {'Birthdate':<21} {'Nationality':<15} {'Club':<22} {statCategoryGK:<20}\n")
 
     for x in range (len(GKs)):
-        file.write(f"{GKs[x]['name']:<25} {GKs[x]['position']:<23} {GKs[x]['footed']:<12} {GKs[x]['birthdate']:<21} {GKs[x]['nationality']:<15} {GKs[x]['club']:<22} {GKs[x][statCategoryGK]:<20}\n")
+        file.write(f"{GKs[x]['name']:<28} {GKs[x]['position']:<26} {GKs[x]['footed']:<12} {GKs[x]['birthdate']:<21} {GKs[x]['nationality']:<15} {GKs[x]['club']:<22} {GKs[x][statCategoryGK]:<20}\n")
 
 
     file.close()
