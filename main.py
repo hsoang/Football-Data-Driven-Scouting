@@ -16,7 +16,7 @@ def getTeamUrls():
     Championship = "https://fbref.com/en/comps/10/Championship-Stats"
     Eredivisie = "https://fbref.com/en/comps/23/Eredivisie-Stats"
 
-    leaguesList = [Ligue1]
+    leaguesList = [Bundesliga]
     leaguesCount = len(leaguesList) #number of leagues to be used
     combinedLeaguesURLS = [] #urls of teams
 
@@ -152,13 +152,16 @@ def retrievePlayerStats(teamLinks):
             counter = 0
 
             #print(Name)
-
-            while (end):
-                if nameURL in normalizeName(Name[counter].text):
-                    Name = Name[counter].text
-                    end = False
-                else:
-                    counter += 1
+            try:
+                while (end):
+                    if nameURL in normalizeName(Name[counter].text):
+                        Name = Name[counter].text
+                        end = False
+                    else:
+                        counter += 1
+            except Exception as e:
+                print(f"Error processing nameURL for {nameURL}: {e}")
+                break  # Exit only the current iteration
 
             #print(Name, end = " ")
             shortInfo = soup.find_all("p")
@@ -187,9 +190,14 @@ def retrievePlayerStats(teamLinks):
             # else:
             #     print(Footed)
                 
-            Birthdate = soup.find_all("span", id = "necro-birth")
-            Birthdate = Birthdate[0].text
-            Birthdate = Birthdate.strip()
+            try:
+                Birthdate = soup.find_all("span", id="necro-birth")
+                Birthdate = Birthdate[0].text
+                Birthdate = Birthdate.strip()
+            except Exception as e:  # Catch any potential errors
+                print(f"Error processing birthdate for {nameURL}: {e}")
+                Birthdate = "N/A"
+                continue
             #print(Birthdate)
 
             nationality = soup.find_all("p")
@@ -213,12 +221,16 @@ def retrievePlayerStats(teamLinks):
             end = True
             counter = 0
 
-            while (end):
-                if "Club:" in clubInfo[counter].text:
-                    clubInfo = clubInfo[counter].text
-                    end = False
-                else:
-                    counter += 1
+            try:
+                while (end):
+                    if "Club:" in clubInfo[counter].text:
+                        clubInfo = clubInfo[counter].text
+                        end = False
+                    else:
+                        counter += 1
+            except Exception as e:
+                print(f"Error processing club for {nameURL}: {e}")
+                break
 
 
             clubInfo = clubInfo.split(":")
@@ -380,7 +392,7 @@ def retrievePlayerStats(teamLinks):
                                                        stat18, stat19, stat20, stat21)
                 playersNonGK.append(playerObject)
 
-            time.sleep(1.5)
+            time.sleep(2)
 
     return playersNonGK, playersGKs
 
