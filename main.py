@@ -16,7 +16,7 @@ def getTeamUrls():
     Championship = "https://fbref.com/en/comps/10/Championship-Stats"
     Eredivisie = "https://fbref.com/en/comps/23/Eredivisie-Stats"
 
-    leaguesList = [Bundesliga]
+    leaguesList = [Championship,Eredivisie,SerieA]
     leaguesCount = len(leaguesList) #number of leagues to be used
     combinedLeaguesURLS = [] #urls of teams
 
@@ -197,7 +197,7 @@ def retrievePlayerStats(teamLinks):
             except Exception as e:  # Catch any potential errors
                 print(f"Error processing birthdate for {nameURL}: {e}")
                 Birthdate = "N/A"
-                continue
+                break
             #print(Birthdate)
 
             nationality = soup.find_all("p")
@@ -369,6 +369,8 @@ def retrievePlayerStats(teamLinks):
                 stat17 = stats[17].text
                 stat17 = stat17[7:11]  
                 stat17 = dataIntCheck(stat17)
+                if float(stat17) > 5:
+                    break
                 #print(stat17)     
                 stat18 = stats[18].text
                 stat18 = stat18[13:17]  
@@ -381,6 +383,8 @@ def retrievePlayerStats(teamLinks):
                 stat20 = stats[20].text
                 stat20 = stat20[10:14]  
                 stat20 = dataIntCheck(stat20)
+                if float(stat20) > 10:
+                    break
                 #print(stat20)     
                 stat21 = stats[21].text
                 stat21 = stat21[11:15]  
