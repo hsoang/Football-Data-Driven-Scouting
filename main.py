@@ -560,10 +560,10 @@ if __name__ == '__main__':
 
 
     file.write("------------------Goalkeepers--------------------------------------------------------------------------------------------------------------------------------------------\n")
-    file.write(f"{'Name':<27}  {'Position':<26} {'Footed':<12} {'Birthdate':<21} {'Nationality':<15} {'Club':<22} {statCategoryGK:<20}\n")
+    file.write(f"{'Name':<27}  {'Position':<26} {'Footed':<12} {'Birthdate':<21} {'Nationality':<15} {'Club':<27} {statCategoryGK:<20}\n")
 
     for x in range (len(GKs)):
-        file.write(f"{GKs[x]['name']:<28} {GKs[x]['position']:<26} {GKs[x]['footed']:<12} {GKs[x]['birthdate']:<21} {GKs[x]['nationality']:<15} {GKs[x]['club']:<22} {GKs[x][statCategoryGK]:<20}\n")
+        file.write(f"{GKs[x]['name']:<28} {GKs[x]['position']:<26} {GKs[x]['footed']:<12} {GKs[x]['birthdate']:<21} {GKs[x]['nationality']:<15} {GKs[x]['club']:<27} {GKs[x][statCategoryGK]:<20}\n")
 
 
     file.close()
