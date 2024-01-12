@@ -204,12 +204,17 @@ def retrievePlayerStats(teamLinks):
             end = True
             counter = 0
 
-            while (end):
-                if "National Team" in nationality[counter].text or "Citizenship" in nationality[counter].text:
-                    nationality = nationality[counter].text
-                    end = False
-                else:
-                    counter += 1
+            try:
+                while (end):
+                    if "National Team" in nationality[counter].text or "Citizenship" in nationality[counter].text:
+                        nationality = nationality[counter].text
+                        end = False
+                    else:
+                        counter += 1
+            except Exception as e:
+                print(f"Error processing nationality for {nameURL}: {e}")
+                nationality = "N/A"
+                break
 
             nationality = nationality.split(":")
             NationalTeam = nationality[1].split(" ")
