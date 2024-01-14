@@ -16,7 +16,7 @@ def getTeamUrls():
     Championship = "https://fbref.com/en/comps/10/Championship-Stats"
     Eredivisie = "https://fbref.com/en/comps/23/Eredivisie-Stats"
 
-    leaguesList = [Championship,Eredivisie,SerieA]
+    leaguesList = [Bundesliga,LaLiga,Ligue1,Championship,Eredivisie,SerieA]
     leaguesCount = len(leaguesList) #number of leagues to be used
     combinedLeaguesURLS = [] #urls of teams
 
