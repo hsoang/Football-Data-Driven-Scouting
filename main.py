@@ -553,7 +553,9 @@ if __name__ == '__main__':
 
     file = open('playersData.txt', 'w', encoding="utf-8")
 
-    file.write("Name,Position,Footed,Birthdate,Nationality,Club,Non-Penalty Goals,Non-Penalty xG(npxG),Shots Total,Assists\n")
+    file.write("Name,Position,Footed,Birthdate,Nationality,Club,Non-Penalty Goals,Non-Penalty xG(npxG),Shots Total,Assists,"
+               "Expected Assisted Goals(xAG),npxG + xAG,Shot-Creating Actions,Passes Attempted,Pass Completion %,Progessive Passes,"
+               "Progessive Carries,Successful Take-Ons,Touches(Att Pen),Tackles,Interceptions,Blocks,Clearances,Aerials Won")
     
     for x in range (len(NonGKs)):
         file.write(f"{NonGKs[x]['name']},{NonGKs[x]['position']},{NonGKs[x]['footed']},{NonGKs[x]['birthdate']},{NonGKs[x]['nationality']},{NonGKs[x]['club']},"
