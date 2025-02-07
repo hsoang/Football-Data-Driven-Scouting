@@ -6,6 +6,7 @@ import requests
 from bs4 import BeautifulSoup
 import time
 import operator
+import random
 
 
 def getTeamUrls():
@@ -16,7 +17,7 @@ def getTeamUrls():
     Championship = "https://fbref.com/en/comps/10/Championship-Stats"
     Eredivisie = "https://fbref.com/en/comps/23/Eredivisie-Stats"
 
-    leaguesList = [Bundesliga,LaLiga,Ligue1,Championship,Eredivisie,SerieA]
+    leaguesList = [SerieA]
     leaguesCount = len(leaguesList) #number of leagues to be used
     combinedLeaguesURLS = [] #urls of teams
 
@@ -25,8 +26,9 @@ def getTeamUrls():
         data = requests.get(leaguesList[x])
         soup = BeautifulSoup(data.text, features = "html.parser")
 
+        print(data)
         standings_table = soup.select('table', class_='stats_table')[0]
-
+    
         
         links = standings_table.find_all('a')
 
@@ -123,7 +125,7 @@ def normalizeName(name): #remove accents from names
 def retrievePlayerStats(teamLinks):
     playersNonGK = []
     playersGKs = []
-    for x in range(len(teamLinks)):
+    for x in range(len(teamLinks) - 19):
         data = requests.get(teamLinks[x])
         soup = BeautifulSoup(data.text, features = "html.parser")
 
@@ -403,7 +405,7 @@ def retrievePlayerStats(teamLinks):
                                                        stat18, stat19, stat20, stat21)
                 playersNonGK.append(playerObject)
 
-            time.sleep(2)
+            time.sleep(random.uniform(3,6))
 
     return playersNonGK, playersGKs
 
@@ -412,7 +414,7 @@ if __name__ == '__main__':
     print("\nCollecting data of players in the chosen league(s)...\n")
 
     teamUrls = getTeamUrls()
-    #print(teamUrls)
+    print(teamUrls)
     
     NonGKs, GKs = retrievePlayerStats(teamUrls)
     print("Data of all players from chosen leagues has been successfully collected, what would you like to do next?")
@@ -551,20 +553,21 @@ if __name__ == '__main__':
 
     file = open('playersData.txt', 'w', encoding="utf-8")
 
-    file.write("STATS ARE LISTED IN VALUES PER 90 MINUTES PLAYED\n")
-    file.write("-----------------Outfielders---------------------------------------------------------------------------------------------------------------------------------------------\n")
-    file.write(f"{'Name':<27}  {'Position':<26} {'Footed':<12} {'Birthdate':<21} {'Nationality':<15} {'Club':<27} {statCategory:<15}\n")
+    file.write("Name,Position,Footed,Birthdate,Nationality,Club,Non-Penalty Goals,Non-Penalty xG(npxG),Shots Total,Assists\n")
     
     for x in range (len(NonGKs)):
-        file.write(f"{NonGKs[x]['name']:<28} {NonGKs[x]['position']:<26} {NonGKs[x]['footed']:<12} {NonGKs[x]['birthdate']:<21} {NonGKs[x]['nationality']:<15} {NonGKs[x]['club']:<27} {NonGKs[x][statCategory]:<15}\n")
+        file.write(f"{NonGKs[x]['name']},{NonGKs[x]['position']},{NonGKs[x]['footed']},{NonGKs[x]['birthdate']},{NonGKs[x]['nationality']},{NonGKs[x]['club']},"
+                   f"{NonGKs[x]['Non-Penalty Goals']},{NonGKs[x]['Non-Penalty xG(npxG)']},{NonGKs[x]['Shots Total']},{NonGKs[x]['Assists']},"
+                    f"{NonGKs[x]['Expected Assisted Goals(xAG)']},{NonGKs[x]['npxG + xAG']},{NonGKs[x]['Shot-Creating Actions']},{NonGKs[x]['Passes Attempted']},"
+                    f"{NonGKs[x]['Pass Completion %']},{NonGKs[x]['Progessive Passes']},{NonGKs[x]['Progessive Carries']},{NonGKs[x]['Successful Take-Ons']},"
+                    f"{NonGKs[x]['Touches(Att Pen)']},{NonGKs[x]['Tackles']},{NonGKs[x]['Interceptions']},{NonGKs[x]['Blocks']},"
+                    f"{NonGKs[x]['Clearances']},{NonGKs[x]['Aerials Won']}\n")
+    # file.write("------------------Goalkeepers--------------------------------------------------------------------------------------------------------------------------------------------\n")
+    # file.write(f"{'Name':<27}  {'Position':<26} {'Footed':<12} {'Birthdate':<21} {'Nationality':<15} {'Club':<27} {statCategoryGK:<20}\n")
 
-
-    file.write("------------------Goalkeepers--------------------------------------------------------------------------------------------------------------------------------------------\n")
-    file.write(f"{'Name':<27}  {'Position':<26} {'Footed':<12} {'Birthdate':<21} {'Nationality':<15} {'Club':<27} {statCategoryGK:<20}\n")
-
-    for x in range (len(GKs)):
-        file.write(f"{GKs[x]['name']:<28} {GKs[x]['position']:<26} {GKs[x]['footed']:<12} {GKs[x]['birthdate']:<21} {GKs[x]['nationality']:<15} {GKs[x]['club']:<27} {GKs[x][statCategoryGK]:<20}\n")
+    # for x in range (len(GKs)):
+    #     file.write(f"{GKs[x]['name']:<28} {GKs[x]['position']:<26} {GKs[x]['footed']:<12} {GKs[x]['birthdate']:<21} {GKs[x]['nationality']:<15} {GKs[x]['club']:<27} {GKs[x][statCategoryGK]:<20}\n")
 
 
     file.close()
-    print("\nplayersData.txt exported to the same location as this program.\n")
+    print("\nplayersData.csv exported to the same location as this program.\n")
