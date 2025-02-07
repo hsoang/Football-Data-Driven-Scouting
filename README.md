@@ -1,1 +1,1 @@
-Web scaper that grabs data from https://fbref.com. Data can then be sorted by the statistics available from the site. Afterwards, it will be printed and exported to local files. Add/Remove leagues in "getTeamUrls()". Web scraper will work any amount of leagues.
+Web scaper that grabs data export to local CSV file. Add/Remove leagues in "getTeamUrls()". Web scraper will work any amount of leagues.
