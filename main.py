@@ -140,7 +140,7 @@ def retrievePlayerStats(teamLinks):
         playerURLS = [f"https://fbref.com{l}" for l in links] #urls of players
         #print(playerURLS)
 
-        for x in range((len(playerURLS))): #Choosing number of players
+        for x in range((len(playerURLS))-16): #Choosing number of players
             parts = playerURLS[x].split("/")
             name = parts[-1]
             nameURL = name.replace("-", " ")
@@ -180,7 +180,7 @@ def retrievePlayerStats(teamLinks):
            
                     
             parts = shortInfo.split("▪ ")
-            Position = parts[0].split(":")[1].strip()
+            Position = parts[0].split(":")[1].replace(" ","").replace(",","-").strip()
             try:
                 Footed = parts[1].split(":")[1].strip()
             except IndexError:
@@ -551,11 +551,11 @@ if __name__ == '__main__':
          
 
 
-    file = open('playersData.txt', 'w', encoding="utf-8")
+    file = open('playersData.csv', 'w', encoding="utf-8")
 
-    file.write("Name,Position,Footed,Birthdate,Nationality,Club,Non-Penalty Goals,Non-Penalty xG(npxG),Shots Total,Assists,"
+    file.write("Name,Position,Footed,Birthdate,Birthdate,Nationality,Club,Non-Penalty Goals,Non-Penalty xG(npxG),Shots Total,Assists,"
                "Expected Assisted Goals(xAG),npxG + xAG,Shot-Creating Actions,Passes Attempted,Pass Completion %,Progessive Passes,"
-               "Progessive Carries,Successful Take-Ons,Touches(Att Pen),Tackles,Interceptions,Blocks,Clearances,Aerials Won")
+               "Progessive Carries,Successful Take-Ons,Touches(Att Pen),Tackles,Interceptions,Blocks,Clearances,Aerials Won\n")
     
     for x in range (len(NonGKs)):
         file.write(f"{NonGKs[x]['name']},{NonGKs[x]['position']},{NonGKs[x]['footed']},{NonGKs[x]['birthdate']},{NonGKs[x]['nationality']},{NonGKs[x]['club']},"
