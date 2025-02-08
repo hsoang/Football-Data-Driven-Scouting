@@ -125,7 +125,7 @@ def normalizeName(name): #remove accents from names
 def retrievePlayerStats(teamLinks):
     playersNonGK = []
     playersGKs = []
-    for x in range(len(teamLinks) - 19):
+    for x in range(len(teamLinks) - 17): #Choosing number of teams
         data = requests.get(teamLinks[x])
         soup = BeautifulSoup(data.text, features = "html.parser")
 
@@ -140,7 +140,7 @@ def retrievePlayerStats(teamLinks):
         playerURLS = [f"https://fbref.com{l}" for l in links] #urls of players
         #print(playerURLS)
 
-        for x in range((len(playerURLS))-16): #Choosing number of players
+        for x in range((len(playerURLS))): #Choosing number of players
             parts = playerURLS[x].split("/")
             name = parts[-1]
             nameURL = name.replace("-", " ")
