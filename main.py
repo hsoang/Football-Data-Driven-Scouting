@@ -16,8 +16,9 @@ def getTeamUrls():
     Bundesliga = "https://fbref.com/en/comps/20/Bundesliga-Stats"
     Championship = "https://fbref.com/en/comps/10/Championship-Stats"
     Eredivisie = "https://fbref.com/en/comps/23/Eredivisie-Stats"
+    PrimeiraLiga = "https://fbref.com/en/comps/32/Primeira-Liga-Stats"
 
-    leaguesList = [SerieA]
+    leaguesList = [Eredivisie,PrimeiraLiga,Championship]
     leaguesCount = len(leaguesList) #number of leagues to be used
     combinedLeaguesURLS = [] #urls of teams
 
@@ -125,11 +126,16 @@ def normalizeName(name): #remove accents from names
 def retrievePlayerStats(teamLinks):
     playersNonGK = []
     playersGKs = []
-    for x in range(len(teamLinks) - 17): #Choosing number of teams
+    for x in range(len(teamLinks)): #Choosing number of teams
         data = requests.get(teamLinks[x])
         soup = BeautifulSoup(data.text, features = "html.parser")
 
-        stats_table = soup.select('table.stats_table')[0]
+        try:
+            stats_table = soup.select('table.stats_table')[0]
+
+        except Exception as e:
+            print(f"Error processing player stats for {teamLinks[x]}: {e}")
+            break
 
         links = stats_table.find_all('a')
         links = [l.get("href") for l in links]
@@ -405,7 +411,7 @@ def retrievePlayerStats(teamLinks):
                                                        stat18, stat19, stat20, stat21)
                 playersNonGK.append(playerObject)
 
-            time.sleep(random.uniform(3,6))
+            time.sleep(random.uniform(4,8))
 
     return playersNonGK, playersGKs
 
@@ -417,137 +423,137 @@ if __name__ == '__main__':
     print(teamUrls)
     
     NonGKs, GKs = retrievePlayerStats(teamUrls)
-    print("Data of all players from chosen leagues has been successfully collected, what would you like to do next?")
+    print("Data of all players from chosen leagues has been successfully collected.")
 
-    statCategory = "Non-Penalty Goals" #the output will only show the category the user chooses to sort by, along with basic info
-    statCategoryGK = "Save Percentage"
+    # statCategory = "Non-Penalty Goals" #the output will only show the category the user chooses to sort by, along with basic info
+    # statCategoryGK = "Save Percentage"
 
-    while True:
-        print("\nMain Menu")
-        print("0. Quit and Export Data.\n1. Work with outfield players (no GKs).\n2. Work with goalkeepers.")
-        userInput = int(input())
+    # while True:
+    #     print("\nMain Menu")
+    #     print("0. Quit and Export Data.\n1. Work with outfield players (no GKs).\n2. Work with goalkeepers.")
+    #     userInput = int(input())
 
-        if userInput == 0:
-            break
-        elif userInput == 1:
-            print("\nSort by: ")
-            print("0. Return to Main Menu\n1. Name\n2. Position\n3. Footed\n4. Non-Penalty Goals\n5. Non-Penalty xG(npxG)\n6. Shots Total")
-            print("7. Assist\n8. Expected Assisted Goals(xAG)\n9. npXG + xAG\n10. Shot-Creating Actions\n11. Passes Attempted\n12. Pass Completion %")
-            print("13. Progessive Passes\n14. Progessive Carries\n15. Successful Take-Ons\n16. Touches(Att Pen)\n17. Tackles\n18. Interceptions\n19. Blocks")
-            print("20. Clearances\n21. Aerials Won")
-            userInput = int(input())
-            match userInput:
-                case 1:
-                    NonGKs = sorted(NonGKs, key=lambda player: player["name"])
-                case 2:
-                    NonGKs = sorted(NonGKs, key=lambda player: player["position"], reverse=True)
-                case 3:
-                    NonGKs = sorted(NonGKs, key=lambda player: player["footed"], reverse=True)
-                case 4:
-                    NonGKs = sorted(NonGKs, key=lambda player: player["Non-Penalty Goals"], reverse=True)
-                    statCategory = "Non-Penalty Goals"
-                case 5:
-                    NonGKs = sorted(NonGKs, key=lambda player: player["Non-Penalty xG(npxG)"], reverse=True)
-                    statCategory = "Non-Penalty xG(npxG)"
-                case 6:
-                    NonGKs = sorted(NonGKs, key=lambda player: player["Shots Total"])
-                    statCategory = "Shots Total"
-                case 7:
-                    NonGKs = sorted(NonGKs, key=lambda player: player["Assists"], reverse=True)
-                    statCategory = "Assists"
-                case 8:
-                    NonGKs = sorted(NonGKs, key=lambda player: player["Expected Assisted Goals(xAG)"], reverse=True)
-                    statCategory = "Expected Assisted Goals(xAG)"
-                case 9:
-                    NonGKs = sorted(NonGKs, key=lambda player: player["npxG + xAG"], reverse=True)
-                    statCategory = "npxG + xAG"
-                case 10:
-                    NonGKs = sorted(NonGKs, key=lambda player: player["Shot-Creating Actions"], reverse=True)
-                    statCategory = "Shot-Creating Actions"
-                case 11:
-                    NonGKs = sorted(NonGKs, key=lambda player: player["Passes Attempted"])
-                    statCategory = "Passes Attempted"
-                case 12:
-                    NonGKs = sorted(NonGKs, key=lambda player: player["Pass Completion %"], reverse=True)
-                    statCategory = "Pass Completion %"
-                case 13:
-                    NonGKs = sorted(NonGKs, key=lambda player: player["Progessive Passes"], reverse=True)
-                    statCategory = "Progessive Passes"
-                case 14:
-                    NonGKs = sorted(NonGKs, key=lambda player: player["Progessive Carries"], reverse=True)
-                    statCategory = "Progessive Carries"
-                case 15:
-                    NonGKs = sorted(NonGKs, key=lambda player: player["Successful Take-Ons"], reverse=True)
-                    statCategory = "Successful Take-Ons"
-                case 16:
-                    NonGKs = sorted(NonGKs, key=lambda player: player["Touches(Att Pen)"])
-                    statCategory = "Touches(Att Pen)"
-                case 17:
-                    NonGKs = sorted(NonGKs, key=lambda player: player["Tackles"], reverse=True)
-                    statCategory = "Tackles"
-                case 18:
-                    NonGKs = sorted(NonGKs, key=lambda player: player["Interceptions"], reverse=True)
-                    statCategory = "Interceptions"
-                case 19:
-                    NonGKs = sorted(NonGKs, key=lambda player: player["Blocks"], reverse=True)
-                    statCategory = "Blocks"
-                case 20:
-                    NonGKs = sorted(NonGKs, key=lambda player: player["Clearances"], reverse=True)
-                    statCategory = "Clearances"
-                case 21:
-                    NonGKs = sorted(NonGKs, key=lambda player: player["Aerials Won"], reverse=True)
-                    statCategory = "Aerials Won"
+    #     if userInput == 0:
+    #         break
+    #     elif userInput == 1:
+    #         print("\nSort by: ")
+    #         print("0. Return to Main Menu\n1. Name\n2. Position\n3. Footed\n4. Non-Penalty Goals\n5. Non-Penalty xG(npxG)\n6. Shots Total")
+    #         print("7. Assist\n8. Expected Assisted Goals(xAG)\n9. npXG + xAG\n10. Shot-Creating Actions\n11. Passes Attempted\n12. Pass Completion %")
+    #         print("13. Progessive Passes\n14. Progessive Carries\n15. Successful Take-Ons\n16. Touches(Att Pen)\n17. Tackles\n18. Interceptions\n19. Blocks")
+    #         print("20. Clearances\n21. Aerials Won")
+    #         userInput = int(input())
+    #         match userInput:
+    #             case 1:
+    #                 NonGKs = sorted(NonGKs, key=lambda player: player["name"])
+    #             case 2:
+    #                 NonGKs = sorted(NonGKs, key=lambda player: player["position"], reverse=True)
+    #             case 3:
+    #                 NonGKs = sorted(NonGKs, key=lambda player: player["footed"], reverse=True)
+    #             case 4:
+    #                 NonGKs = sorted(NonGKs, key=lambda player: player["Non-Penalty Goals"], reverse=True)
+    #                 statCategory = "Non-Penalty Goals"
+    #             case 5:
+    #                 NonGKs = sorted(NonGKs, key=lambda player: player["Non-Penalty xG(npxG)"], reverse=True)
+    #                 statCategory = "Non-Penalty xG(npxG)"
+    #             case 6:
+    #                 NonGKs = sorted(NonGKs, key=lambda player: player["Shots Total"])
+    #                 statCategory = "Shots Total"
+    #             case 7:
+    #                 NonGKs = sorted(NonGKs, key=lambda player: player["Assists"], reverse=True)
+    #                 statCategory = "Assists"
+    #             case 8:
+    #                 NonGKs = sorted(NonGKs, key=lambda player: player["Expected Assisted Goals(xAG)"], reverse=True)
+    #                 statCategory = "Expected Assisted Goals(xAG)"
+    #             case 9:
+    #                 NonGKs = sorted(NonGKs, key=lambda player: player["npxG + xAG"], reverse=True)
+    #                 statCategory = "npxG + xAG"
+    #             case 10:
+    #                 NonGKs = sorted(NonGKs, key=lambda player: player["Shot-Creating Actions"], reverse=True)
+    #                 statCategory = "Shot-Creating Actions"
+    #             case 11:
+    #                 NonGKs = sorted(NonGKs, key=lambda player: player["Passes Attempted"])
+    #                 statCategory = "Passes Attempted"
+    #             case 12:
+    #                 NonGKs = sorted(NonGKs, key=lambda player: player["Pass Completion %"], reverse=True)
+    #                 statCategory = "Pass Completion %"
+    #             case 13:
+    #                 NonGKs = sorted(NonGKs, key=lambda player: player["Progessive Passes"], reverse=True)
+    #                 statCategory = "Progessive Passes"
+    #             case 14:
+    #                 NonGKs = sorted(NonGKs, key=lambda player: player["Progessive Carries"], reverse=True)
+    #                 statCategory = "Progessive Carries"
+    #             case 15:
+    #                 NonGKs = sorted(NonGKs, key=lambda player: player["Successful Take-Ons"], reverse=True)
+    #                 statCategory = "Successful Take-Ons"
+    #             case 16:
+    #                 NonGKs = sorted(NonGKs, key=lambda player: player["Touches(Att Pen)"])
+    #                 statCategory = "Touches(Att Pen)"
+    #             case 17:
+    #                 NonGKs = sorted(NonGKs, key=lambda player: player["Tackles"], reverse=True)
+    #                 statCategory = "Tackles"
+    #             case 18:
+    #                 NonGKs = sorted(NonGKs, key=lambda player: player["Interceptions"], reverse=True)
+    #                 statCategory = "Interceptions"
+    #             case 19:
+    #                 NonGKs = sorted(NonGKs, key=lambda player: player["Blocks"], reverse=True)
+    #                 statCategory = "Blocks"
+    #             case 20:
+    #                 NonGKs = sorted(NonGKs, key=lambda player: player["Clearances"], reverse=True)
+    #                 statCategory = "Clearances"
+    #             case 21:
+    #                 NonGKs = sorted(NonGKs, key=lambda player: player["Aerials Won"], reverse=True)
+    #                 statCategory = "Aerials Won"
             
-        elif userInput == 2:
-            print("\nSort by: ")
-            print("0. Return to Main Menu\n1. Name\n2. Post-Shot Expected Goals minus Goals Allowed\n3. Goals Against\n4. Save Percentage")
-            print("5. Post-Shot Expected Goals per Shot on Target\n6. Saves% (Penalty Kicks)\n7. Clean Sheet Percentage\n8. Touches\n9. Launch%")
-            print("10. Goal Kicks\n11. Average length of Goal Kicks\n12. Crosses Stopped %\n13. Defensive Actions Outside Penalty Area\n14. Average Distance of Defense Actions")
-            userInput = int(input())
-            match userInput:
-                case 1:
-                    GKs = sorted(GKs, key=lambda player: player["name"], reverse=True)
-                case 2:
-                    GKs = sorted(GKs, key=lambda player: player["Post-Shot Expected Goals minus Goals Allowed"], reverse=True)
-                    statCategoryGK = "Post-Shot Expected Goals minus Goals Allowed"
-                case 3:
-                    GKs = sorted(GKs, key=lambda player: player["Goals Against"], reverse=True)
-                    statCategoryGK = "Goals Against"
-                case 4:
-                    GKs = sorted(GKs, key=lambda player: player["Save Percentage"], reverse=True)
-                    statCategoryGK = "Save Percentage"
-                case 5:
-                    GKs = sorted(GKs, key=lambda player: player["Post-Shot Expected Goals per Shot on Target"], reverse=True)
-                    statCategoryGK = "Post-Shot Expected Goals per Shot on Target"
-                case 6:
-                    GKs = sorted(GKs, key=lambda player: player["Saves% (Penalty Kicks)"], reverse=True)
-                    statCategoryGK = "Saves% (Penalty Kicks)"
-                case 7:
-                    GKs = sorted(GKs, key=lambda player: player["Clean Sheet Percentage"], reverse=True)
-                    statCategoryGK = "Clean Sheet Percentage"
-                case 8:
-                    GKs = sorted(GKs, key=lambda player: player["Touches"], reverse=True)
-                    statCategoryGK = "Touches"
-                case 9:
-                    GKs = sorted(GKs, key=lambda player: player["Launch %"], reverse=True)
-                    statCategoryGK = "Launch %"
-                case 10:
-                    GKs = sorted(GKs, key=lambda player: player["Goal Kicks"], reverse=True)
-                    statCategoryGK = "Goal Kicks"
-                case 11:
-                    GKs = sorted(GKs, key=lambda player: player["Average length of Goal Kicks"], reverse=True)
-                    statCategoryGK = "Average length of Goal Kicks"
-                case 12:
-                    GKs = sorted(GKs, key=lambda player: player["Crosses Stopped %"], reverse=True)
-                    statCategoryGK = "Crosses Stopped %"
-                case 13:
-                    GKs = sorted(GKs, key=lambda player: player["Defensive Actions Outside Penalty Area"], reverse=True)
-                    statCategoryGK = "Defensive Actions Outside Penalty Area"
-                case 14:
-                    GKs = sorted(GKs, key=lambda player: player["Average Distance of Defense Actions"], reverse=True)
-                    statCategoryGK = "Average Distance of Defense Actions"
-        else:
-            print("Invalid Choice.")
+    #     elif userInput == 2:
+    #         print("\nSort by: ")
+    #         print("0. Return to Main Menu\n1. Name\n2. Post-Shot Expected Goals minus Goals Allowed\n3. Goals Against\n4. Save Percentage")
+    #         print("5. Post-Shot Expected Goals per Shot on Target\n6. Saves% (Penalty Kicks)\n7. Clean Sheet Percentage\n8. Touches\n9. Launch%")
+    #         print("10. Goal Kicks\n11. Average length of Goal Kicks\n12. Crosses Stopped %\n13. Defensive Actions Outside Penalty Area\n14. Average Distance of Defense Actions")
+    #         userInput = int(input())
+    #         match userInput:
+    #             case 1:
+    #                 GKs = sorted(GKs, key=lambda player: player["name"], reverse=True)
+    #             case 2:
+    #                 GKs = sorted(GKs, key=lambda player: player["Post-Shot Expected Goals minus Goals Allowed"], reverse=True)
+    #                 statCategoryGK = "Post-Shot Expected Goals minus Goals Allowed"
+    #             case 3:
+    #                 GKs = sorted(GKs, key=lambda player: player["Goals Against"], reverse=True)
+    #                 statCategoryGK = "Goals Against"
+    #             case 4:
+    #                 GKs = sorted(GKs, key=lambda player: player["Save Percentage"], reverse=True)
+    #                 statCategoryGK = "Save Percentage"
+    #             case 5:
+    #                 GKs = sorted(GKs, key=lambda player: player["Post-Shot Expected Goals per Shot on Target"], reverse=True)
+    #                 statCategoryGK = "Post-Shot Expected Goals per Shot on Target"
+    #             case 6:
+    #                 GKs = sorted(GKs, key=lambda player: player["Saves% (Penalty Kicks)"], reverse=True)
+    #                 statCategoryGK = "Saves% (Penalty Kicks)"
+    #             case 7:
+    #                 GKs = sorted(GKs, key=lambda player: player["Clean Sheet Percentage"], reverse=True)
+    #                 statCategoryGK = "Clean Sheet Percentage"
+    #             case 8:
+    #                 GKs = sorted(GKs, key=lambda player: player["Touches"], reverse=True)
+    #                 statCategoryGK = "Touches"
+    #             case 9:
+    #                 GKs = sorted(GKs, key=lambda player: player["Launch %"], reverse=True)
+    #                 statCategoryGK = "Launch %"
+    #             case 10:
+    #                 GKs = sorted(GKs, key=lambda player: player["Goal Kicks"], reverse=True)
+    #                 statCategoryGK = "Goal Kicks"
+    #             case 11:
+    #                 GKs = sorted(GKs, key=lambda player: player["Average length of Goal Kicks"], reverse=True)
+    #                 statCategoryGK = "Average length of Goal Kicks"
+    #             case 12:
+    #                 GKs = sorted(GKs, key=lambda player: player["Crosses Stopped %"], reverse=True)
+    #                 statCategoryGK = "Crosses Stopped %"
+    #             case 13:
+    #                 GKs = sorted(GKs, key=lambda player: player["Defensive Actions Outside Penalty Area"], reverse=True)
+    #                 statCategoryGK = "Defensive Actions Outside Penalty Area"
+    #             case 14:
+    #                 GKs = sorted(GKs, key=lambda player: player["Average Distance of Defense Actions"], reverse=True)
+    #                 statCategoryGK = "Average Distance of Defense Actions"
+    #     else:
+    #         print("Invalid Choice.")
          
 
 
