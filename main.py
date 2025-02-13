@@ -18,7 +18,7 @@ def getTeamUrls():
     Eredivisie = "https://fbref.com/en/comps/23/Eredivisie-Stats"
     PrimeiraLiga = "https://fbref.com/en/comps/32/Primeira-Liga-Stats"
 
-    leaguesList = [Eredivisie,PrimeiraLiga,Championship]
+    leaguesList = [Eredivisie]
     leaguesCount = len(leaguesList) #number of leagues to be used
     combinedLeaguesURLS = [] #urls of teams
 
@@ -169,7 +169,7 @@ def retrievePlayerStats(teamLinks):
                         counter += 1
             except Exception as e:
                 print(f"Error processing nameURL for {nameURL}: {e}")
-                break  # Exit only the current iteration
+                continue # Exit only the current iteration
 
             #print(Name, end = " ")
             shortInfo = soup.find_all("p")
@@ -205,7 +205,7 @@ def retrievePlayerStats(teamLinks):
             except Exception as e:  # Catch any potential errors
                 print(f"Error processing birthdate for {nameURL}: {e}")
                 Birthdate = "N/A"
-                break
+                continue
             #print(Birthdate)
 
             nationality = soup.find_all("p")
@@ -222,7 +222,7 @@ def retrievePlayerStats(teamLinks):
             except Exception as e:
                 print(f"Error processing nationality for {nameURL}: {e}")
                 nationality = "N/A"
-                break
+                continue
 
             nationality = nationality.split(":")
             NationalTeam = nationality[1].split(" ")
@@ -242,8 +242,8 @@ def retrievePlayerStats(teamLinks):
                     else:
                         counter += 1
             except Exception as e:
-                print(f"Error processing club for {nameURL}: {e}")
-                break
+                print(f"Error processing club info for {nameURL}: {e}")
+                continue
 
 
             clubInfo = clubInfo.split(":")
@@ -254,7 +254,8 @@ def retrievePlayerStats(teamLinks):
                 #print(Name)
                 stats = soup.find_all("tr")
                 if len(stats) < 13: #if the player doesn't have any recorded stats, his data won't be collected
-                    break
+                    print(name)
+                    continue
                 stat1 = stats[1].text
                 stat1 = stat1[7:12]
                 stat1 = dataIntCheck(stat1)
@@ -320,7 +321,8 @@ def retrievePlayerStats(teamLinks):
                 #print(Name)
                 stats = soup.find_all("tr")
                 if len(stats) < 19: #if the player doesn't have any recorded stats, his data won't be collected
-                    break
+                    print(name)
+                    continue
                 stat1 = stats[1].text
                 stat1 = stat1[17:21]
                 stat1 = dataIntCheck(stat1)
@@ -365,7 +367,7 @@ def retrievePlayerStats(teamLinks):
                 stat12 = stat12[19:23]
                 stat12 = dataIntCheck(stat12)
                 if float(stat12) > 20:
-                    break
+                    continue
                 #print(stat12)
                 stat13 = stats[13].text
                 stat13 = stat13[19:23]  
@@ -383,7 +385,7 @@ def retrievePlayerStats(teamLinks):
                 stat17 = stat17[7:11]  
                 stat17 = dataIntCheck(stat17)
                 if float(stat17) > 5:
-                    break
+                    continue
                 #print(stat17)     
                 stat18 = stats[18].text
                 stat18 = stat18[13:17]  
@@ -397,7 +399,7 @@ def retrievePlayerStats(teamLinks):
                 stat20 = stat20[10:14]  
                 stat20 = dataIntCheck(stat20)
                 if float(stat20) > 10:
-                    break
+                    continue
                 #print(stat20)     
                 stat21 = stats[21].text
                 stat21 = stat21[11:15]  
@@ -411,7 +413,9 @@ def retrievePlayerStats(teamLinks):
                                                        stat18, stat19, stat20, stat21)
                 playersNonGK.append(playerObject)
 
-            time.sleep(random.uniform(4,8))
+                time.sleep(random.uniform(4,8))
+
+            
 
     return playersNonGK, playersGKs
 
