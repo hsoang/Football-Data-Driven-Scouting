@@ -18,7 +18,7 @@ def getTeamUrls():
     Eredivisie = "https://fbref.com/en/comps/23/Eredivisie-Stats"
     PrimeiraLiga = "https://fbref.com/en/comps/32/Primeira-Liga-Stats"
 
-    leaguesList = [Eredivisie]
+    leaguesList = [Championship]
     leaguesCount = len(leaguesList) #number of leagues to be used
     combinedLeaguesURLS = [] #urls of teams
 
@@ -146,7 +146,7 @@ def retrievePlayerStats(teamLinks):
         playerURLS = [f"https://fbref.com{l}" for l in links] #urls of players
         #print(playerURLS)
 
-        for x in range((len(playerURLS))): #Choosing number of players
+        for x in range(len(playerURLS)): #Choosing number of players
             parts = playerURLS[x].split("/")
             name = parts[-1]
             nameURL = name.replace("-", " ")
@@ -413,7 +413,7 @@ def retrievePlayerStats(teamLinks):
                                                        stat18, stat19, stat20, stat21)
                 playersNonGK.append(playerObject)
 
-                time.sleep(random.uniform(4,8))
+                time.sleep(random.uniform(6,9))
 
             
 
@@ -427,7 +427,7 @@ if __name__ == '__main__':
     print(teamUrls)
     
     NonGKs, GKs = retrievePlayerStats(teamUrls)
-    print("Data of all players from chosen leagues has been successfully collected.")
+    print("\nData of all players from chosen leagues has been successfully collected.")
 
     # statCategory = "Non-Penalty Goals" #the output will only show the category the user chooses to sort by, along with basic info
     # statCategoryGK = "Save Percentage"
