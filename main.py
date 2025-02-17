@@ -18,7 +18,7 @@ def getTeamUrls():
     Eredivisie = "https://fbref.com/en/comps/23/Eredivisie-Stats"
     PrimeiraLiga = "https://fbref.com/en/comps/32/Primeira-Liga-Stats"
 
-    leaguesList = [Championship]
+    leaguesList = [PrimeiraLiga]
     leaguesCount = len(leaguesList) #number of leagues to be used
     combinedLeaguesURLS = [] #urls of teams
 
@@ -254,7 +254,7 @@ def retrievePlayerStats(teamLinks):
                 #print(Name)
                 stats = soup.find_all("tr")
                 if len(stats) < 13: #if the player doesn't have any recorded stats, his data won't be collected
-                    print(name)
+                    print(f"No recorded stats, skipping {name}.")
                     continue
                 stat1 = stats[1].text
                 stat1 = stat1[7:12]
@@ -321,7 +321,7 @@ def retrievePlayerStats(teamLinks):
                 #print(Name)
                 stats = soup.find_all("tr")
                 if len(stats) < 19: #if the player doesn't have any recorded stats, his data won't be collected
-                    print(name)
+                    print(f"No recorded stats, skipping {name}.")
                     continue
                 stat1 = stats[1].text
                 stat1 = stat1[17:21]
@@ -413,7 +413,7 @@ def retrievePlayerStats(teamLinks):
                                                        stat18, stat19, stat20, stat21)
                 playersNonGK.append(playerObject)
 
-                time.sleep(random.uniform(6,9))
+                time.sleep(random.uniform(7,10))
 
             
 
