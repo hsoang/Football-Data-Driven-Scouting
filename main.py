@@ -17,8 +17,9 @@ def getTeamUrls():
     Championship = "https://fbref.com/en/comps/10/Championship-Stats"
     Eredivisie = "https://fbref.com/en/comps/23/Eredivisie-Stats"
     PrimeiraLiga = "https://fbref.com/en/comps/32/Primeira-Liga-Stats"
+    KLeague = "https://fbref.com/en/comps/55/2024/2024-K-League-1-Stats"
 
-    leaguesList = [PrimeiraLiga]
+    leaguesList = [LaLiga]
     leaguesCount = len(leaguesList) #number of leagues to be used
     combinedLeaguesURLS = [] #urls of teams
 
@@ -176,12 +177,16 @@ def retrievePlayerStats(teamLinks):
             end = True
             counter = 0
 
-            while (end):
-                if "Position" in shortInfo[counter].text:
-                    shortInfo = shortInfo[counter].text
-                    end = False
-                else:
-                    counter += 1
+            try:
+                while (end):
+                    if "Position" in shortInfo[counter].text:
+                        shortInfo = shortInfo[counter].text
+                        end = False
+                    else:
+                        counter += 1
+            except Exception as e:
+                print(f"Error processing position for {name}.")
+                continue
 
            
                     
@@ -395,13 +400,21 @@ def retrievePlayerStats(teamLinks):
                 stat19 = stat19[6:10]  
                 stat19 = dataIntCheck(stat19)
                 #print(stat19)     
-                stat20 = stats[20].text
+                try:
+                    stat20 = stats[20].text
+                except Exception as e:
+                    print(f"stat20 missing for {name}.")
+                    continue
                 stat20 = stat20[10:14]  
                 stat20 = dataIntCheck(stat20)
                 if float(stat20) > 10:
                     continue
                 #print(stat20)     
-                stat21 = stats[21].text
+                try:
+                    stat21 = stats[21].text
+                except Exception as e:
+                    print(f"stat21 missing for {name}.")
+                    continue
                 stat21 = stat21[11:15]  
                 stat21 = dataIntCheck(stat21)
                 #print(stat21)              
